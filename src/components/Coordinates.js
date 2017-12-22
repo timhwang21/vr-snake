@@ -1,0 +1,66 @@
+import React, { Component } from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+} from 'react-vr';
+
+import fixed from '../decorators/fixed';
+
+const styles = StyleSheet.create({
+  text: {
+    fontSize: .05,
+  }
+})
+
+const parse = n => Number(n.toFixed(2)) * 100;
+
+class Coordinates extends Component {
+  state = {
+    x: 0,
+    y: 0,
+  };
+
+  handleInput = e => {
+    const { viewportX, viewportY } = e.nativeEvent.inputEvent;
+
+    this.setState({
+      x: viewportX,
+      y: viewportY,
+    });
+  }
+
+  render() {
+    const { style } = this.props;
+    const { x, y } = this.state;
+
+    return (
+      <View
+        style={{
+          height: .25,
+          width: .25,
+          borderRadius: 5,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'green',
+          alignSelf: 'center',
+          ...style,
+        }}
+        onInput={this.handleInput}
+      >
+        <Text
+          style={styles.text}
+        >
+          {`X: ${parse(x)}`}
+        </Text>
+        <Text
+          style={styles.text}
+        >
+          {`Y: ${parse(y)}`}
+        </Text>
+      </View>
+    );
+  }
+}
+
+export default fixed(Coordinates);
