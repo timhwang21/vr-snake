@@ -2,71 +2,155 @@ import React from 'react';
 import {
   AppRegistry,
   asset,
+  Box,
   Pano,
-  Text,
+  PointLight,
+  Scene,
   View,
 } from 'react-vr';
 
-import clickable from './src/decorators/clickable';
-import hoverable from './src/decorators/hoverable';
-import fixed from './src/decorators/fixed';
+import {
+  BOX_SIZE,
+  DIRECTIONS,
+  KEY_TO_DIRECTION,
+} from './src/constants';
 
-const MyText = clickable(hoverable(Text));
-const FixedView = fixed(View);
+import loop from './src/utils/loop';
+import move from './src/utils/move';
+import rescale from './src/utils/rescale';
+import Coordinates from './src/components/Coordinates';
+import hidable from './src/decorators/hidable';
+
+const HidablePointLight = hidable(PointLight);
 
 export default class vr_test extends React.Component {
   state = {
-    counter: -3,
+    direction: DIRECTIONS.up,
+    coordinates: [0, 0, 0],
+    paused: false,
   };
 
-  handleClick = () => this.setState(state => ({ counter: state.counter + 1 }));
-  handleLongClick = () => this.setState(state => ({ counter: state.counter - 1 }));
+  componentDidMount() {
+    this.interval = setInterval(this.tick, 100);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  tick = () => {
+    const { coordinates, direction, paused } = this.state;
+
+    if (paused) {
+      return;
+    }
+
+    this.setState({
+      coordinates: loop(move(coordinates, direction)),
+    });
+  }
+
+  handleInput = e => {
+    const { paused } = this.state;
+    const event = e.nativeEvent.inputEvent;
+
+
+    if (event.eventType === 'keydown') {
+      if (event.code === 'Space') {
+        this.setState({ paused: !paused });
+        return;
+      }
+
+      const newDirection = KEY_TO_DIRECTION[event.code];
+
+      newDirection && this.setState({
+        direction: newDirection,
+        paused: false,
+      });
+    }
+  }
 
   render() {
-    const { counter } = this.state;
+    const { coordinates, paused } = this.state;
 
     return (
-      <View>
+      <Scene
+        onInput={this.handleInput}
+        style={{
+          transform: [
+            { translate: rescale([25, 15, 45]) }
+          ],
+        }}
+
+      >
         <Pano source={asset('chess-world.jpg')}/>
-        <FixedView
-          style={{
-            transform: [
-              { translate: [0, 0, -2] },
-            ]
-          }}
-        >
-          <Text>+</Text>
-        </FixedView>
+        <Coordinates/>
         <View
           style={{
-            layoutOrigin: [.5, .5],
+            transform: [
+              // { translate: [BOX_SIZE * -25, BOX_SIZE * 15, -3] }
+            ],
           }}
         >
-          <View
+          <HidablePointLight
+            hidden={paused}
             style={{
-              alignItems: 'center',
+              color: 'green',
               transform: [
-                { translate: [0, 0, counter] }
-              ]
+                { translate: [10, 0, 0] }
+              ],
             }}
-          >
-            <MyText
-              onClick={this.handleClick}
-              onLongClick={this.handleLongClick}
-              style={{
-                backgroundColor: '#777879',
-                fontSize: 0.8,
-                fontWeight: '400',
-                paddingLeft: 0.2,
-                paddingRight: 0.2,
-                textAlign: 'center',
-                textAlignVertical: 'center',
-              }}>
-              Click to move
-            </MyText>
-          </View>
+          />
+          <HidablePointLight
+            hidden={paused}
+            style={{
+              color: 'blue',
+              transform: [
+                { translate: [-10, 0, 0] }
+              ],
+            }}
+          />
+          <HidablePointLight
+            hidden={paused}
+            style={{
+              color: 'red',
+              transform: [
+                { translate: [0, 0, -10] }
+              ],
+            }}
+          />
+          <HidablePointLight
+            hidden={paused}
+            style={{
+              color: 'red',
+              transform: [
+                { translate: [0, 0, 10] }
+              ],
+            }}
+          />
+          <HidablePointLight
+            hidden={paused}
+            style={{
+              color: 'orange',
+              transform: [
+                { translate: [0, 10, 0] }
+              ],
+            }}
+          />
+          <Box
+            dimWidth={BOX_SIZE}
+            dimDepth={BOX_SIZE}
+            dimHeight={BOX_SIZE}
+            lit
+            style={{
+              // color: 'red',
+              transform: [
+                { translate: rescale(coordinates) },
+              ],
+            }}
+          />
         </View>
-      </View>
+      </Scene>
     );
   }
 }
