@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
+import { object, number, func } from 'prop-types';
 import { View } from 'react-vr';
 
 export default WrappedComponent => class Hoverable extends Component {
+	static propTypes = {
+		hoverStyle: object,
+		style: object,
+		onEnter: func,
+		onExit: func,
+		onInput: func,
+		onHover: func,
+		hoverTimeout: number,
+	}
 	static defaultProps = {
-		hoverStyle: { color: 'red' },
 		onEnter: () => {},
 		onExit: () => {},
+		onInput: () => {},
+		onHover: null,
+		hoverTimeout: 0,
 	};
 
 	static displayName = `Hoverable.${WrappedComponent.displayName || WrappedComponent.name}`;
@@ -13,6 +25,25 @@ export default WrappedComponent => class Hoverable extends Component {
 	state = {
 		hover: false,
 	};
+
+	componentDidMount() {
+		const { onHover, hoverTimeout } = this.props;
+
+		if (onHover) {
+			this.interval = setInterval(this.handleHover, hoverTimeout);
+		}
+	}
+
+	componentWillUnmount() {
+		this.interval && clearInterval(this.interval);
+	}
+
+	handleHover = () => {
+		const { onHover } = this.props;
+		const { hover } = this.state;
+
+		hover && onHover();
+	}
 
 	get style() {
 		const { hoverStyle, style } = this.props;
@@ -23,30 +54,40 @@ export default WrappedComponent => class Hoverable extends Component {
 			: style;
 	}
 
-	onEnter = e => {
+	handleEnter = e => {
 		const { onEnter } = this.props;
 
 		this.setState({ hover: true });
 		onEnter(e);
 	};
 
-	onExit = e => {
+	handleExit = e => {
 		const { onExit } = this.props;
 
 		this.setState({ hover: false });
 		onExit(e);
 	};
 
+	handleInput = e => {
+		const { onInput } = this.props;
+
+		onInput(e);
+	}
+
 	render() {
-		const { style } = this.props;
+		const { onEnter, onExit, onInput, hoverStyle, style, ...props } = this.props;
 
 		return (
-			<WrappedComponent
-				{...this.props}
-				onEnter={this.onEnter}
-				onExit={this.onExit}
-				style={this.style}
-			/>
+			<View
+				onEnter={this.handleEnter}
+				onExit={this.handleExit}
+				onInput={this.handleInput}
+			>
+				<WrappedComponent
+					{...props}
+					style={this.style}
+				/>
+			</View>
 		);
 	}
 }
