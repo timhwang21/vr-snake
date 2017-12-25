@@ -2,31 +2,28 @@ import React from 'react';
 import {
   AppRegistry,
   asset,
-  Box,
   Pano,
-  PointLight,
   Scene,
   View,
 } from 'react-vr';
 
 import {
-  BOX_SIZE,
   DIRECTIONS,
   KEY_TO_DIRECTION,
+  START_POS,
+  START_SNAKE,
 } from './src/constants';
 
-import loop from './src/utils/loop';
-import move from './src/utils/move';
+import moveSnake from './src/utils/moveSnake';
 import rescale from './src/utils/rescale';
-import Coordinates from './src/components/Coordinates';
-import hidable from './src/decorators/hidable';
 
-const HidablePointLight = hidable(PointLight);
+import LightArray from './src/components/LightArray';
+import Snake from './src/components/Snake';
 
 export default class vr_test extends React.Component {
   state = {
     direction: DIRECTIONS.up,
-    coordinates: [0, 0, 0],
+    segments: START_SNAKE,
     paused: false,
   };
 
@@ -39,14 +36,14 @@ export default class vr_test extends React.Component {
   }
 
   tick = () => {
-    const { coordinates, direction, paused } = this.state;
+    const { segments, direction, paused } = this.state;
 
     if (paused) {
       return;
     }
 
     this.setState({
-      coordinates: loop(move(coordinates, direction)),
+      segments: moveSnake(segments, direction),
     });
   }
 
@@ -71,84 +68,21 @@ export default class vr_test extends React.Component {
   }
 
   render() {
-    const { coordinates, paused } = this.state;
+    const { segments, paused } = this.state;
 
     return (
       <Scene
         onInput={this.handleInput}
         style={{
           transform: [
-            { translate: rescale([25, 15, 45]) }
+            { translate: rescale(START_POS) }
           ],
         }}
-
       >
         <Pano source={asset('chess-world.jpg')}/>
-        <Coordinates/>
-        <View
-          style={{
-            transform: [
-              // { translate: [BOX_SIZE * -25, BOX_SIZE * 15, -3] }
-            ],
-          }}
-        >
-          <HidablePointLight
-            hidden={paused}
-            style={{
-              color: 'green',
-              transform: [
-                { translate: [10, 0, 0] }
-              ],
-            }}
-          />
-          <HidablePointLight
-            hidden={paused}
-            style={{
-              color: 'blue',
-              transform: [
-                { translate: [-10, 0, 0] }
-              ],
-            }}
-          />
-          <HidablePointLight
-            hidden={paused}
-            style={{
-              color: 'red',
-              transform: [
-                { translate: [0, 0, -10] }
-              ],
-            }}
-          />
-          <HidablePointLight
-            hidden={paused}
-            style={{
-              color: 'red',
-              transform: [
-                { translate: [0, 0, 10] }
-              ],
-            }}
-          />
-          <HidablePointLight
-            hidden={paused}
-            style={{
-              color: 'orange',
-              transform: [
-                { translate: [0, 10, 0] }
-              ],
-            }}
-          />
-          <Box
-            dimWidth={BOX_SIZE}
-            dimDepth={BOX_SIZE}
-            dimHeight={BOX_SIZE}
-            lit
-            style={{
-              // color: 'red',
-              transform: [
-                { translate: rescale(coordinates) },
-              ],
-            }}
-          />
+        <View>
+          <LightArray hidden={paused}/>
+          <Snake segments={segments}/>
         </View>
       </Scene>
     );
