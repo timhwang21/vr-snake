@@ -7,7 +7,7 @@ import Segment from './Segment';
 
 export default class Snake extends Component {
   static propTypes = {
-    segments: arrayOf(position)
+    segments: arrayOf(position),
   };
 
   render() {
@@ -15,14 +15,9 @@ export default class Snake extends Component {
 
     return (
       <View>
-        {
-          segments.map(position => (
-            <Segment
-              id={position.join('')}
-              position={position}
-            />
-          ))
-        }
+        {segments.map(position => (
+          <Segment id={position.join('')} position={position} />
+        ))}
       </View>
     );
   }

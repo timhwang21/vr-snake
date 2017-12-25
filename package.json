@@ -7,7 +7,9 @@
     "bundle": "node node_modules/react-vr/scripts/bundle.js",
     "open": "node -e \"require('xopen')('http://localhost:8081/vr/')\"",
     "devtools": "react-devtools",
-    "test": "jest"
+    "test": "jest",
+    "prettier": "prettier --single-quote --trailing-comma all --no-config --write \"src/**/*.{js,css}\"",
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "ovrui": "~2.0.0",
@@ -20,7 +22,10 @@
   "devDependencies": {
     "babel-jest": "^19.0.0",
     "babel-preset-react-native": "^1.9.1",
+    "husky": "^0.14.3",
     "jest": "^19.0.2",
+    "lint-staged": "^6.0.0",
+    "prettier": "^1.9.2",
     "prop-types": "^15.6.0",
     "react-devtools": "^2.5.2",
     "react-test-renderer": "16.0.0",
@@ -28,5 +33,11 @@
   },
   "jest": {
     "preset": "react-vr"
+  },
+  "lint-staged": {
+    "*.{js,css}": [
+      "yarn prettier",
+      "git add"
+    ]
   }
 }

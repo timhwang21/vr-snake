@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-} from 'react-vr';
+import { Text, View, StyleSheet } from 'react-vr';
 
 import fixed from '../decorators/fixed';
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: .05,
-  }
-})
+    fontSize: 0.05,
+  },
+});
 
 const parse = n => Number(n.toFixed(2)) * 100;
 
@@ -28,7 +24,7 @@ class Coordinates extends Component {
       x: viewportX,
       y: viewportY,
     });
-  }
+  };
 
   render() {
     const { style } = this.props;
@@ -37,8 +33,8 @@ class Coordinates extends Component {
     return (
       <View
         style={{
-          height: .25,
-          width: .25,
+          height: 0.25,
+          width: 0.25,
           borderRadius: 5,
           alignItems: 'center',
           justifyContent: 'center',
@@ -48,16 +44,8 @@ class Coordinates extends Component {
         }}
         onInput={this.handleInput}
       >
-        <Text
-          style={styles.text}
-        >
-          {`X: ${parse(x)}`}
-        </Text>
-        <Text
-          style={styles.text}
-        >
-          {`Y: ${parse(y)}`}
-        </Text>
+        <Text style={styles.text}>{`X: ${parse(x)}`}</Text>
+        <Text style={styles.text}>{`Y: ${parse(y)}`}</Text>
       </View>
     );
   }

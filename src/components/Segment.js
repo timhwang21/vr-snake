@@ -12,9 +12,7 @@ const Segment = ({ position }) => (
     dimWidth={BOX_SIZE}
     dimDepth={BOX_SIZE}
     style={{
-      transform: [
-        { translate: rescale(position) }
-      ],
+      transform: [{ translate: rescale(position) }],
     }}
     lit
   />
@@ -22,7 +20,7 @@ const Segment = ({ position }) => (
 
 Segment.propTypes = {
   position: position,
-}
+};
 
 Segment.displayName = 'Segment';
 
