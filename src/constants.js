@@ -15,8 +15,8 @@ export const KEY_TO_DIRECTION = {
   KeyA: DIRECTIONS.left,
   KeyS: DIRECTIONS.down,
   KeyD: DIRECTIONS.right,
-  KeyQ: DIRECTIONS.back,
-  KeyE: DIRECTIONS.forwards,
+  // KeyQ: DIRECTIONS.back,
+  // KeyE: DIRECTIONS.forwards,
 };
 
 export const BOUNDARIES = [80, 40, 60];
