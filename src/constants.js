@@ -24,3 +24,15 @@ export const BOUNDARIES = [80, 40, 60];
 export const START_POS = BOUNDARIES.map(c => c / 2).map(
   (c, i) => (i == 2 ? 3 * c : c),
 );
+
+// TODO: color config, etc. goes here?
+export const OBJECTS = {
+  segment: {
+    type: 'segment',
+    isObstacle: true,
+  },
+  apple: {
+    type: 'apple',
+    isObstacle: false,
+  },
+};

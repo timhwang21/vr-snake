@@ -1,10 +1,11 @@
-export function hasCollision(positionSet, head) {
-  return positionSet.has(head);
+import { OBJECTS } from '../constants';
+
+export function hasCollision(map, head) {
+  return map.has(head);
 }
 
-export function updateCollisionSet(positionSet, head, last) {
-  positionSet.add(head);
-  positionSet.delete(last);
+export function collidedWithObstacle(map, head) {
+  const type = map.get(head);
 
-  return positionSet;
+  return OBJECTS[type].isObstacle;
 }

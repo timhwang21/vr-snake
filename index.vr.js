@@ -1,12 +1,18 @@
 import React from 'react';
 import { AppRegistry, asset, Pano, Scene, View } from 'react-vr';
 
-import { DIRECTIONS, KEY_TO_DIRECTION, START_POS } from './src/constants';
+import {
+  DIRECTIONS,
+  KEY_TO_DIRECTION,
+  START_POS,
+  OBJECTS,
+} from './src/constants';
 
+import createInitialPositionMap from './src/utils/createInitialPositionMap';
 import createSnake from './src/utils/createSnake';
 import moveSnake from './src/utils/moveSnake';
 import rescale from './src/utils/rescale';
-import { hasCollision, updateCollisionSet } from './src/utils/collision';
+import { hasCollision, collidedWithObstacle } from './src/utils/collision';
 
 import LightArray from './src/components/LightArray';
 import Snake from './src/components/Snake';
@@ -15,15 +21,15 @@ export default class vr_test extends React.Component {
   constructor() {
     super();
 
-    const segments = createSnake(8);
+    const snake = createSnake(8);
 
     this.state = {
       direction: DIRECTIONS.up,
-      segments,
+      snake,
       paused: false,
     };
 
-    this.positionSet = new Set(segments.map(String));
+    this.positionMap = createInitialPositionMap(snake);
   }
 
   componentDidMount() {
@@ -35,24 +41,35 @@ export default class vr_test extends React.Component {
   }
 
   tick = () => {
-    const { segments, direction, paused } = this.state;
+    const { snake, direction, paused } = this.state;
 
     if (paused) {
       return;
     }
 
-    const newSnake = moveSnake(segments, direction);
+    const newSnake = moveSnake(snake, direction);
 
-    const last = String(segments[0]);
+    const last = String(snake[0]);
     const head = String(newSnake[newSnake.length - 1]);
 
-    if (hasCollision(this.positionSet, head)) {
-      this.endGame();
+    if (hasCollision(this.positionMap, head)) {
+      if (collidedWithObstacle(this.positionMap, head)) {
+        return this.endGame();
+      } else {
+        // if collided with apple, add last back into snake and do not remove last from position set
+        newSnake.splice(0, 0, last);
+        this.positionMap.set(head, OBJECTS.segment.type);
+
+        this.setState({
+          snake: newSnake,
+        });
+      }
     } else {
-      this.positionSet = updateCollisionSet(this.positionSet, head, last);
+      this.positionMap.set(head, OBJECTS.segment.type);
+      this.positionMap.delete(last);
 
       this.setState({
-        segments: newSnake,
+        snake: newSnake,
       });
     }
   };
@@ -83,7 +100,7 @@ export default class vr_test extends React.Component {
   }
 
   render() {
-    const { segments, paused } = this.state;
+    const { snake, paused } = this.state;
 
     return (
       <Scene
@@ -95,7 +112,7 @@ export default class vr_test extends React.Component {
         <Pano source={asset('chess-world.jpg')} />
         <View>
           <LightArray hidden={paused} />
-          <Snake segments={segments} />
+          <Snake segments={snake} />
         </View>
       </Scene>
     );
