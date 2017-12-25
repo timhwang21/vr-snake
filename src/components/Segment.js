@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Box } from 'react-vr';
 
 import { BOX_SIZE } from '../constants';
@@ -6,22 +6,24 @@ import position from '../propTypes/position';
 
 import rescale from '../utils/rescale';
 
-const Segment = ({ position }) => (
-  <Box
-    dimHeight={BOX_SIZE}
-    dimWidth={BOX_SIZE}
-    dimDepth={BOX_SIZE}
-    style={{
-      transform: [{ translate: rescale(position) }],
-    }}
-    lit
-  />
-);
+export default class Segment extends PureComponent {
+  static propTypes = {
+    position: position,
+  };
 
-Segment.propTypes = {
-  position: position,
-};
+  render() {
+    const { position } = this.props;
 
-Segment.displayName = 'Segment';
-
-export default Segment;
+    return (
+      <Box
+        dimHeight={BOX_SIZE}
+        dimWidth={BOX_SIZE}
+        dimDepth={BOX_SIZE}
+        style={{
+          transform: [{ translate: rescale(position) }],
+        }}
+        lit
+      />
+    );
+  }
+}

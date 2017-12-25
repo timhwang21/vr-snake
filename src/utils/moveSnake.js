@@ -1,11 +1,11 @@
 import { BOUNDARIES } from '../constants';
 
-export function move(coordinates, direction) {
-  return coordinates.map((c, i) => c + direction[i]);
+export function move(position, direction) {
+  return position.map((c, i) => c + direction[i]);
 }
 
-export function loop(coordinates) {
-  return coordinates.map((c, i) => negMod(c, BOUNDARIES[i]));
+export function loop(position) {
+  return position.map((c, i) => negMod(c, BOUNDARIES[i]));
 }
 
 export function negMod(x, y) {

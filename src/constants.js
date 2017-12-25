@@ -24,11 +24,3 @@ export const BOUNDARIES = [80, 40, 60];
 export const START_POS = BOUNDARIES.map(c => c / 2).map(
   (c, i) => (i == 2 ? 3 * c : c),
 );
-
-export const START_SNAKE = [
-  [0, 0, 0],
-  [0, 1, 0],
-  [0, 2, 0],
-  [0, 3, 0],
-  [0, 4, 0],
-];

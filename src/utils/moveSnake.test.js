@@ -2,31 +2,31 @@ import moveSnake, { move, loop, negMod } from './moveSnake';
 import { BOUNDARIES } from '../constants';
 
 describe('#move', () => {
-  it('returns a new location given coordinates and a direction', () => {
-    const coordinates = [1, 2, 3];
+  it('returns a new location given position and a direction', () => {
+    const position = [1, 2, 3];
     const direction = [4, 5, 6];
     const expectation = [5, 7, 9];
 
-    expect(move(coordinates, direction)).toEqual(expectation);
+    expect(move(position, direction)).toEqual(expectation);
   });
 });
 
 describe('#loop', () => {
-  describe('when new coordinates are within bounds', () => {
-    it('returns coordinates unchanged', () => {
-      const coordinates = [1, 2, 3];
+  describe('when new position are within bounds', () => {
+    it('returns position unchanged', () => {
+      const position = [1, 2, 3];
 
-      expect(loop(coordinates)).toEqual(coordinates);
+      expect(loop(position)).toEqual(position);
     });
   });
 
-  describe('when new coordinates overlap bounds', () => {
-    it('returns a new location given coordinates and a direction', () => {
+  describe('when new position overlap bounds', () => {
+    it('returns a new location given position and a direction', () => {
       const offset = 5;
-      const coordinates = BOUNDARIES.map(c => c + offset);
+      const position = BOUNDARIES.map(c => c + offset);
       const expectation = [offset, offset, offset];
 
-      expect(loop(coordinates)).toEqual(expectation);
+      expect(loop(position)).toEqual(expectation);
     });
   });
 });
