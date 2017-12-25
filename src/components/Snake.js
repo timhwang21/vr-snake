@@ -16,7 +16,7 @@ export default class Snake extends Component {
     return (
       <View>
         {segments.map(position => (
-          <Segment id={position.join('')} position={position} />
+          <Segment key={String(position)} position={position} />
         ))}
       </View>
     );

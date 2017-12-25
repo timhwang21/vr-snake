@@ -7,7 +7,13 @@ export default function createSnake(
   startPos,
   direction = DIRECTIONS.up,
 ) {
-  let snakeHead = [startPos || createRandomPosition(5, [null, null, 0])];
+  let snakeHead = [
+    startPos ||
+      createRandomPosition({
+        buffer: 5,
+        fixedValues: [null, null, 0],
+      }),
+  ];
   const newSnake = [...snakeHead];
 
   for (let i = 1; i < length; i++) {
