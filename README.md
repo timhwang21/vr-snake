@@ -1,4 +1,3 @@
-TODO:
+# VR Snake
 
-* Apples
-* Snake -- growth mechanism
+Control by moving your head
