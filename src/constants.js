@@ -19,6 +19,15 @@ export const KEY_TO_DIRECTION = {
   // KeyE: DIRECTIONS.forwards,
 };
 
+export const KEY_TO_DIRECTION_REVERSE = {
+  KeyW: DIRECTIONS.down,
+  KeyA: DIRECTIONS.right,
+  KeyS: DIRECTIONS.up,
+  KeyD: DIRECTIONS.left,
+  // KeyQ: DIRECTIONS.forwards,
+  // KeyE: DIRECTIONS.back,
+};
+
 export const BOUNDARIES = [80, 40, 60];
 
 export const START_POS = BOUNDARIES.map(c => c / 2).map(

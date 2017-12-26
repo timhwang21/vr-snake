@@ -6,6 +6,7 @@ import position from './src/propTypes/position';
 import {
   DIRECTIONS,
   KEY_TO_DIRECTION,
+  KEY_TO_DIRECTION_REVERSE,
   START_POS,
   OBJECTS,
 } from './src/constants';
@@ -106,23 +107,31 @@ export default class vr_test extends React.Component {
   }
 
   handleInput(e) {
-    const { paused } = this.state;
     const event = e.nativeEvent.inputEvent;
 
     if (event.eventType === 'keydown') {
-      if (event.code === 'Space') {
-        this.setState({ paused: !paused });
-        return;
-      }
-
-      const newDirection = KEY_TO_DIRECTION[event.code];
-
-      newDirection &&
-        this.setState({
-          direction: newDirection,
-          paused: false,
-        });
+      this.handleKeyPress(event.code);
     }
+  }
+
+  handleKeyPress(keycode) {
+    const { direction, paused } = this.state;
+
+    if (keycode === 'Space') {
+      this.setState({ paused: !paused });
+      return;
+    }
+
+    const newDirection = KEY_TO_DIRECTION[keycode];
+
+    if (!newDirection || KEY_TO_DIRECTION_REVERSE[keycode] === direction) {
+      return;
+    }
+
+    this.setState({
+      direction: newDirection,
+      paused: false,
+    });
   }
 
   endGame() {
