@@ -1,10 +1,11 @@
 import React from 'react';
 import { number } from 'prop-types';
-import { AppRegistry, asset, Pano, Scene, View } from 'react-vr';
+import { AppRegistry, asset, Pano, View } from 'react-vr';
 
 import position from './src/propTypes/position';
 import {
   DIRECTIONS,
+  DIRECTIONS_TO_REVERSE,
   KEY_TO_DIRECTION,
   KEY_TO_DIRECTION_REVERSE,
   START_POS,
@@ -18,6 +19,7 @@ import moveSnake from './src/utils/moveSnake';
 import rescale from './src/utils/rescale';
 import { hasCollision, collidedWithObstacle } from './src/utils/collision';
 
+import HeadGestureDetector from './src/components/HeadGestureDetector';
 import LightArray from './src/components/LightArray';
 import Segment from './src/components/Segment';
 import Segments from './src/components/Segments';
@@ -32,13 +34,14 @@ export default class vr_test extends React.Component {
   static defaultProps = {
     initialSnakeLength: 8,
     initialDirection: DIRECTIONS.up,
-    gameSpeed: 100,
+    gameSpeed: 250,
   };
 
   constructor() {
     super();
 
     this.tick = this.tick.bind(this);
+    this.handleHeadGesture = this.handleHeadGesture.bind(this);
     this.handleInput = this.handleInput.bind(this);
   }
 
@@ -114,6 +117,11 @@ export default class vr_test extends React.Component {
     }
   }
 
+  /**
+   * Direction handler for keyboard
+   * @param  {string} keycode W, A, S, or D
+   * @return {void}
+   */
   handleKeyPress(keycode) {
     const { direction, paused } = this.state;
 
@@ -134,6 +142,24 @@ export default class vr_test extends React.Component {
     });
   }
 
+  /**
+   * Direction handler for VR
+   * @param  {object} newDirection
+   * @return {void}
+   */
+  handleHeadGesture(newDirection) {
+    const { direction } = this.state;
+
+    if (newDirection === DIRECTIONS_TO_REVERSE.get(direction)) {
+      return;
+    }
+
+    this.setState({
+      direction: newDirection,
+      paused: false,
+    });
+  }
+
   endGame() {
     clearInterval(this.interval);
     this.initialize();
@@ -143,8 +169,12 @@ export default class vr_test extends React.Component {
     const { apple, snake, paused } = this.state;
 
     return (
-      <Scene
+      <HeadGestureDetector
         onInput={this.handleInput}
+        onUp={this.handleHeadGesture}
+        onDown={this.handleHeadGesture}
+        onLeft={this.handleHeadGesture}
+        onRight={this.handleHeadGesture}
         style={{
           transform: [{ translate: rescale(START_POS) }],
         }}
@@ -155,7 +185,7 @@ export default class vr_test extends React.Component {
           <Segments segments={snake} />
           <Segment position={apple} />
         </View>
-      </Scene>
+      </HeadGestureDetector>
     );
   }
 }

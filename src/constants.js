@@ -10,6 +10,13 @@ export const DIRECTIONS = {
   stop: [0, 0, 0],
 };
 
+export const DIRECTIONS_TO_REVERSE = new WeakMap();
+
+DIRECTIONS_TO_REVERSE.set(DIRECTIONS.up, DIRECTIONS.down);
+DIRECTIONS_TO_REVERSE.set(DIRECTIONS.down, DIRECTIONS.up);
+DIRECTIONS_TO_REVERSE.set(DIRECTIONS.left, DIRECTIONS.right);
+DIRECTIONS_TO_REVERSE.set(DIRECTIONS.right, DIRECTIONS.left);
+
 export const KEY_TO_DIRECTION = {
   KeyW: DIRECTIONS.up,
   KeyA: DIRECTIONS.left,
@@ -45,3 +52,16 @@ export const OBJECTS = {
     isObstacle: false,
   },
 };
+
+export const MOTION_DIRECTIONS = {
+  up: -1,
+  down: 1,
+  left: 2,
+  right: -2,
+  stop: 0,
+  upDown: 1,
+  leftRight: 2,
+};
+
+export const MOTION_THRESHOLD = 0.5;
+export const MOTIONS_TO_TRACK = 4;
