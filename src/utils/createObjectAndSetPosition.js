@@ -8,7 +8,7 @@ import createRandomPosition from './createRandomPosition';
  * @param  {Object} objectType
  * @return {void}
  */
-export default function createAppleAndSetPosition(positionMap, object) {
+export default function createObjectAndSetPosition(positionMap, object) {
   const objectPos = createRandomPosition({
     fixedValues: [null, null, 0],
     positionMap,
