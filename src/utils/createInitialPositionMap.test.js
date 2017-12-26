@@ -7,7 +7,7 @@ describe('#createInitialPositionMap', () => {
     const output = createInitialPositionMap(snake);
 
     snake.forEach(segment => {
-      expect(output.get(String(segment))).toBe(OBJECTS.segment.type);
+      expect(output.get(String(segment))).toBe(OBJECTS.segment);
     });
   });
 });

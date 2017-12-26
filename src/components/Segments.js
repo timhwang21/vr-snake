@@ -5,7 +5,7 @@ import { View } from 'react-vr';
 import position from '../propTypes/position';
 import Segment from './Segment';
 
-export default class Snake extends Component {
+export default class Segments extends Component {
   static propTypes = {
     segments: arrayOf(position),
   };

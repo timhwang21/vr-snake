@@ -11,13 +11,15 @@ import {
 } from './src/constants';
 
 import createInitialPositionMap from './src/utils/createInitialPositionMap';
+import createObjectAndSetPosition from './src/utils/createObjectAndSetPosition';
 import createSnake from './src/utils/createSnake';
 import moveSnake from './src/utils/moveSnake';
 import rescale from './src/utils/rescale';
 import { hasCollision, collidedWithObstacle } from './src/utils/collision';
 
 import LightArray from './src/components/LightArray';
-import Snake from './src/components/Snake';
+import Segment from './src/components/Segment';
+import Segments from './src/components/Segments';
 
 export default class vr_test extends React.Component {
   static propTypes = {
@@ -56,21 +58,25 @@ export default class vr_test extends React.Component {
 
     this.positionMap = createInitialPositionMap(snake);
 
+    const apple = createObjectAndSetPosition(this.positionMap, OBJECTS.apple);
+
     this.setState({
       direction: initialDirection,
       snake,
+      apple,
       paused: false,
     });
   }
 
   tick() {
-    const { snake, direction, paused } = this.state;
+    const { apple, snake, direction, paused } = this.state;
 
     if (paused) {
       return;
     }
 
     const newSnake = moveSnake(snake, direction);
+    let newApple = apple;
 
     const last = String(snake[0]);
     const head = String(newSnake[newSnake.length - 1]);
@@ -81,20 +87,22 @@ export default class vr_test extends React.Component {
       }
 
       // Add back last segment
-      newSnake.splice(0, 0, last);
-      this.positionMap.set(head, OBJECTS.segment);
+      newSnake.splice(0, 0, snake[0]);
 
-      this.setState({
-        snake: newSnake,
-      });
+      newApple = createObjectAndSetPosition(this.positionMap, OBJECTS.apple);
+      // set state apple
     } else {
-      this.positionMap.set(head, OBJECTS.segment);
-      this.positionMap.delete(last);
+      // no collision; update position map
 
-      this.setState({
-        snake: newSnake,
-      });
+      this.positionMap.delete(last);
     }
+
+    this.positionMap.set(head, OBJECTS.segment);
+
+    this.setState({
+      apple: newApple,
+      snake: newSnake,
+    });
   }
 
   handleInput(e) {
@@ -120,11 +128,10 @@ export default class vr_test extends React.Component {
   endGame() {
     clearInterval(this.interval);
     this.initialize();
-    // this.setState({ paused: true });
   }
 
   render() {
-    const { snake, paused } = this.state;
+    const { apple, snake, paused } = this.state;
 
     return (
       <Scene
@@ -136,7 +143,8 @@ export default class vr_test extends React.Component {
         <Pano source={asset('chess-world.jpg')} />
         <View>
           <LightArray hidden={paused} />
-          <Snake segments={snake} />
+          <Segments segments={snake} />
+          <Segment position={apple} />
         </View>
       </Scene>
     );
