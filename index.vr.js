@@ -34,7 +34,7 @@ export default class vr_test extends React.Component {
   static defaultProps = {
     initialSnakeLength: 8,
     initialDirection: DIRECTIONS.up,
-    gameSpeed: 250,
+    gameSpeed: 100,
   };
 
   constructor() {

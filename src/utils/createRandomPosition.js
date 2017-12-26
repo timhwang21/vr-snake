@@ -1,6 +1,12 @@
 import { BOUNDARIES } from '../constants';
 import randomRange from './randomRange';
 
+/**
+ * Create a new position. If the position created is occupied, creates another.
+ *
+ * @param  {Object} opts
+ * @return {Array}  XYZ coordinates
+ */
 export default function createRandomPosition({
   buffer = 0,
   fixedValues = [null, null, null],
