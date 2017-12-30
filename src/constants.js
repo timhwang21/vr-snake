@@ -1,5 +1,16 @@
-export const BOX_SIZE = 0.1;
+// Tweakable constants
 
+export const GAME_SPEED = 250;
+export const INITIAL_SNAKE_LENGTH = 8;
+export const BOX_SIZE = 0.1;
+export const BOUNDARIES = [40, 20, 30];
+export const START_POS = BOUNDARIES.map(c => c / 2).map(
+  (c, i) => (i == 2 ? 3 * c : c),
+);
+export const MOTION_THRESHOLD = 0.25;
+export const MOTIONS_TO_TRACK = 4;
+
+// Fixe constants
 export const DIRECTIONS = {
   up: [0, 1, 0],
   down: [0, -1, 0],
@@ -16,6 +27,16 @@ DIRECTIONS_TO_REVERSE.set(DIRECTIONS.up, DIRECTIONS.down);
 DIRECTIONS_TO_REVERSE.set(DIRECTIONS.down, DIRECTIONS.up);
 DIRECTIONS_TO_REVERSE.set(DIRECTIONS.left, DIRECTIONS.right);
 DIRECTIONS_TO_REVERSE.set(DIRECTIONS.right, DIRECTIONS.left);
+
+export const MOTION_DIRECTIONS = {
+  up: -1,
+  down: 1,
+  left: 2,
+  right: -2,
+  stop: 0,
+  upDown: 1,
+  leftRight: 2,
+};
 
 export const KEY_TO_DIRECTION = {
   KeyW: DIRECTIONS.up,
@@ -35,12 +56,6 @@ export const KEY_TO_DIRECTION_REVERSE = {
   // KeyE: DIRECTIONS.back,
 };
 
-export const BOUNDARIES = [80, 40, 60];
-
-export const START_POS = BOUNDARIES.map(c => c / 2).map(
-  (c, i) => (i == 2 ? 3 * c : c),
-);
-
 // TODO: color config, etc. goes here?
 export const OBJECTS = {
   segment: {
@@ -52,16 +67,3 @@ export const OBJECTS = {
     isObstacle: false,
   },
 };
-
-export const MOTION_DIRECTIONS = {
-  up: -1,
-  down: 1,
-  left: 2,
-  right: -2,
-  stop: 0,
-  upDown: 1,
-  leftRight: 2,
-};
-
-export const MOTION_THRESHOLD = 0.5;
-export const MOTIONS_TO_TRACK = 4;

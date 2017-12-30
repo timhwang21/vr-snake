@@ -6,6 +6,8 @@ import position from './src/propTypes/position';
 import {
   DIRECTIONS,
   DIRECTIONS_TO_REVERSE,
+  GAME_SPEED,
+  INITIAL_SNAKE_LENGTH,
   KEY_TO_DIRECTION,
   KEY_TO_DIRECTION_REVERSE,
   START_POS,
@@ -32,9 +34,9 @@ export default class vr_test extends React.Component {
   };
 
   static defaultProps = {
-    initialSnakeLength: 8,
+    initialSnakeLength: INITIAL_SNAKE_LENGTH,
     initialDirection: DIRECTIONS.up,
-    gameSpeed: 100,
+    gameSpeed: GAME_SPEED,
   };
 
   constructor() {
