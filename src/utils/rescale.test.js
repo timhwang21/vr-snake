@@ -4,7 +4,7 @@ import { BOX_SIZE } from '../constants';
 describe('#rescale', () => {
   it('returns position scaled by box size', () => {
     const position = [1, 2, 3];
-    const expectation = position.map(c => c * BOX_SIZE);
+    const expectation = position.map(c => (c * BOX_SIZE).toFixed(2));
 
     expect(rescale(position)).toEqual(expectation);
   });
