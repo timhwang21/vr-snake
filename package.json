@@ -8,11 +8,14 @@
     "open": "node -e \"require('xopen')('http://localhost:8081/vr/')\"",
     "devtools": "react-devtools",
     "test": "jest",
-    "prettier": "prettier --single-quote --trailing-comma all --no-config --write \"src/**/*.{js,css}\"",
+    "eslint": "eslint \"src/**/*.{js,css}\" \"index.vr.js\"",
+    "eslint-fix": "eslint --fix \"src/**/*.{js,css}\" \"index.vr.js\"",
+    "prettier": "prettier --single-quote --trailing-comma all --no-config --write \"src/**/*.{js,css}\" \"index.vr.js\"",
     "precommit": "lint-staged"
   },
   "dependencies": {
     "ovrui": "~2.0.0",
+    "prop-types": "^15.6.0",
     "react": "16.0.0",
     "react-native": "~0.48.0",
     "react-vr": "~2.0.0",
@@ -20,13 +23,16 @@
     "three": "^0.87.0"
   },
   "devDependencies": {
+    "babel-eslint": "^8.1.2",
     "babel-jest": "^19.0.0",
     "babel-preset-react-native": "^1.9.1",
+    "eslint": "^4.14.0",
+    "eslint-plugin-jest": "^21.5.0",
+    "eslint-plugin-react": "^7.5.1",
     "husky": "^0.14.3",
     "jest": "^19.0.2",
     "lint-staged": "^6.0.0",
     "prettier": "^1.9.2",
-    "prop-types": "^15.6.0",
     "react-devtools": "^2.5.2",
     "react-test-renderer": "16.0.0",
     "xopen": "1.0.0"
@@ -37,6 +43,7 @@
   "lint-staged": {
     "*.{js,css}": [
       "yarn prettier",
+      "yarn eslint-fix",
       "git add"
     ]
   }

@@ -89,7 +89,8 @@ export default class vr_test extends React.Component {
 
     if (hasCollision(this.positionMap, head)) {
       if (collidedWithObstacle(this.positionMap, head)) {
-        return this.endGame();
+        this.endGame();
+        return;
       }
 
       // Add back last segment

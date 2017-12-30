@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { object } from 'prop-types';
 import { Text, View, StyleSheet } from 'react-vr';
 
 import fixed from '../decorators/fixed';
@@ -12,6 +13,10 @@ const styles = StyleSheet.create({
 const parse = n => Number(n.toFixed(2)) * 100;
 
 class Coordinates extends Component {
+  static propTypes = {
+    style: object,
+  };
+
   state = {
     x: 0,
     y: 0,

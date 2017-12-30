@@ -21,7 +21,8 @@ export default WrappedComponent =>
     );
 
     render() {
-      const { rotation, yawPitchRoll, headMatrix } = this.state;
+      const { headMatrix } = this.state;
+      // const { rotation, yawPitchRoll, headMatrix } = this.state;
 
       return (
         <View

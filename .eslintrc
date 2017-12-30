@@ -1,0 +1,24 @@
+{
+	"env": {
+		"es6": true,
+		"browser": true,
+		"node": true,
+		"jest": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended"
+	],
+	"plugins": [
+		"react",
+		"jest"
+	],
+	"globals": {
+		"window": true,
+		"document": true,
+		"Set": true,
+		"Map": true,
+		"WeakMap": true,
+	},
+	"parser": "babel-eslint"
+}

@@ -8,7 +8,7 @@ import rescale from '../utils/rescale';
 
 export default class Segment extends PureComponent {
   static propTypes = {
-    position: position,
+    position,
   };
 
   render() {

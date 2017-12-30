@@ -75,22 +75,13 @@ export default WrappedComponent =>
     };
 
     render() {
-      const {
-        onEnter,
-        onExit,
-        onInput,
-        hoverStyle,
-        style,
-        ...props
-      } = this.props;
-
       return (
         <View
           onEnter={this.handleEnter}
           onExit={this.handleExit}
           onInput={this.handleInput}
         >
-          <WrappedComponent {...props} style={this.style} />
+          <WrappedComponent {...this.props} style={this.style} />
         </View>
       );
     }
