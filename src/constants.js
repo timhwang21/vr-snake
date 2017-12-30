@@ -9,6 +9,7 @@ export const START_POS = BOUNDARIES.map(c => c / 2).map(
 );
 export const MOTION_THRESHOLD = 0.25;
 export const MOTIONS_TO_TRACK = 4;
+export const MOTION_EXPIRY_TIME = 500;
 
 // Fixe constants
 export const DIRECTIONS = {

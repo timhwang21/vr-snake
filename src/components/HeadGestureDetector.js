@@ -11,6 +11,7 @@ import { Scene, VrHeadModel } from 'react-vr';
 import {
   DIRECTIONS,
   MOTION_DIRECTIONS,
+  MOTION_EXPIRY_TIME,
   MOTION_THRESHOLD,
   MOTIONS_TO_TRACK,
 } from '../constants';
@@ -39,6 +40,17 @@ export default class HeadGestureDetector extends Component {
 
   state = initialState;
 
+  componentDidMount() {
+    this.expireMotionInterval = setInterval(
+      () => this.enqueueMotion(MOTION_DIRECTIONS.stop),
+      MOTION_EXPIRY_TIME,
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.expireMotionInterval);
+  }
+
   handleHeadPose = () => {
     const { lastPosition } = this.state;
 
@@ -61,6 +73,14 @@ export default class HeadGestureDetector extends Component {
       lastPosition: { pitch, yaw },
     });
   };
+
+  enqueueMotion(direction) {
+    this.motions.unshift(direction);
+
+    if (this.motions.length > MOTIONS_TO_TRACK) {
+      this.motions.pop();
+    }
+  }
 
   addMotion(newMotion) {
     const { motionDirection } = this.state;
@@ -94,11 +114,7 @@ export default class HeadGestureDetector extends Component {
       }
     }
 
-    this.motions.unshift(newMotion);
-
-    if (this.motions.length > MOTIONS_TO_TRACK) {
-      this.motions.pop();
-    }
+    this.enqueueMotion(newMotion);
   }
 
   analyzeMotions() {
