@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Box } from 'react-vr';
+import { Plane } from 'react-vr';
 
 import { BOX_SIZE } from '../constants';
 import position from '../propTypes/position';
@@ -15,10 +15,10 @@ export default class Segment extends PureComponent {
     const { position } = this.props;
 
     return (
-      <Box
+      <Plane
         dimHeight={BOX_SIZE}
         dimWidth={BOX_SIZE}
-        dimDepth={BOX_SIZE}
+        // dimDepth={BOX_SIZE}
         style={{
           transform: [{ translate: rescale(position) }],
         }}
